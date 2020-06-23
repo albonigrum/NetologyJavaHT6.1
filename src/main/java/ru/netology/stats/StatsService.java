@@ -1,15 +1,16 @@
 package ru.netology.stats;
 
-import java.util.function.LongPredicate;
-import java.util.stream.LongStream;
-
 public class StatsService {
     long sumSales(long[] sales) {
-        return LongStream.of(sales).sum();
+        long sum = 0;
+        for (long sale : sales) {
+            sum += sale;
+        }
+        return sum;
     }
 
     double averageSales(long[] sales) {
-        return LongStream.of(sales).average().getAsDouble();
+        return (double)sumSales(sales) / sales.length;
     }
 
     /**
@@ -45,12 +46,20 @@ public class StatsService {
     long countMonthsWithSaleUnderAverage(long[] sales) {
         double average = averageSales(sales);
         //0.001 - comparison accuracy
-        return LongStream.of(sales).filter(sale -> sale < average - 0.001).count();
+        long count = 0;
+        for (long sale : sales)
+            if (sale < average - 0.001)
+                ++count;
+        return count;
     }
 
     long countMonthsWithSaleOverAverage(long[] sales) {
         double average = averageSales(sales);
         //0.001 - comparison accuracy
-        return LongStream.of(sales).filter(sale -> sale > average + 0.001).count();
+        long count = 0;
+        for (long sale : sales)
+            if (sale > average + 0.001)
+                ++count;
+        return count;
     }
 }
